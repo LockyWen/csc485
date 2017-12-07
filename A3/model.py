@@ -214,12 +214,12 @@ class ParserModel(Model):
         x_w, x_t, x_d = self.add_embeddings()
         ### BEGIN YOUR CODE
         xavier = xavier_weight_init()
-        W_w = tf.Variable(xavier(self.config.n_word_features * self.config.embed_size, self.config.hidden_size))
-        W_t = tf.Variable(xavier(self.config.n_tag_features * self.config.embed_size, self.config.hidden_size))
-        W_d = tf.Variable(xavier(self.config.n_deprel_features * self.config.embed_size, self.config.hidden_size))
+        W_w = tf.get_variable(initializer=xavier, shape=[self.config.n_word_features * self.config.embed_size, self.config.hidden_size])
+        W_t = tf.get_variable(initializer=xavier,shape=[self.config.n_tag_features * self.config.embed_size, self.config.hidden_size])
+        W_d = tf.get_variable(initializer=xavier,shape=[self.config.n_deprel_features * self.config.embed_size, self.config.hidden_size])
         b1 = tf.Variable(tf.zeros(self.config.hidden_size))
         b2 = tf.Variable(tf.zeros(self.config.n_classes))
-        U = tf.Variable(xavier(self.config.hidden_size, self.n_classes))
+        U = tf.get_variable(initializer=xavier,shape=[self.config.hidden_size, self.n_classes])
 
         h = tf.nn.relu(tf.matmul(W_w,x_w) + tf.matmul(W_t, x_t) + tf.matmul(W_d, x_d) + b1)
         h_drop = tf.nn.dropout(h, self.dropout_placeholder)
